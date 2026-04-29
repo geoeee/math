@@ -1,12 +1,42 @@
 # Week 1: 向量空间与线性变换
 
+## 从一个具体问题开始
+
+假设你在训练一个词嵌入模型,每个词被表示为一组数字:
+
+$$
+\text{"cat"} \to (0.2,\ 0.8,\ -0.1), \quad \text{"dog"} \to (0.3,\ 0.7,\ 0.0)
+$$
+
+你自然会问:
+- "cat" 和 "dog" 的**中间点**是什么?→ 取平均 $\frac{1}{2}(\text{cat} + \text{dog})$
+- "更极端的 cat" 是什么?→ 缩放 $2 \times \text{cat}$
+- "cat 的对立面" 大概在哪?→ 取反 $-\text{cat}$
+
+这些操作--**加法和缩放**--就是向量空间的全部核心。
+
+一旦你发现某个集合上能自然地做这两件事,并且结果还留在集合内(不会"溢出"),那它就是一个向量空间。
+
+**哪些东西是向量空间?** 不只是箭头!
+
+| 例子 | 元素 | 加法 | 缩放 | AI 中对应 |
+|------|------|------|------|----------|
+| $\mathbb{R}^n$ | n 维数组 | 分量相加 | 分量乘标量 | Embedding 向量 |
+| 函数空间 | $f: \mathbb{R} \to \mathbb{R}$ | $(f+g)(x) = f(x)+g(x)$ | $(cf)(x) = c \cdot f(x)$ | 激活函数的组合 |
+| 矩阵空间 | $m \times n$ 矩阵 | 对应元素相加 | 每个元素乘标量 | 权重矩阵 |
+| 多项式 | $a_0 + a_1 x + \cdots$ | 对应系数相加 | 所有系数乘标量 | 特征的多项式核 |
+
+> 💡 **关键洞察:** 当我们说 "768维 Embedding 空间" 时,它就是 $\mathbb{R}^{768}$ 这个向量空间。词与词之间可以做加减和缩放,正是因为它们住在向量空间里。
+
+---
+
 ## 核心概念
 
-### 1. 向量空间 (Vector Space)
+### 1. 向量空间的正式定义 (Vector Space)
 
-一个集合 $V$ 配上加法和标量乘法，满足 8 条公理：
+上面的直觉用数学语言写出来,就是一个集合 $V$ 配上加法和标量乘法,满足以下公理:
 
-**加法公理：**
+**加法公理:**
 
 | 性质 | 表达式 |
 |------|--------|
@@ -16,7 +46,7 @@
 | 零向量 | $\exists\ \mathbf{0}\ \text{s.t.}\ \mathbf{v} + \mathbf{0} = \mathbf{v}$ |
 | 逆元 | $\forall\ \mathbf{v},\ \exists\ {-\mathbf{v}}\ \text{s.t.}\ \mathbf{v} + (-\mathbf{v}) = \mathbf{0}$ |
 
-**标量乘法公理：**
+**标量乘法公理:**
 
 | 性质 | 表达式 |
 |------|--------|
@@ -26,35 +56,41 @@
 | 结合律 | $c(d\mathbf{v}) = (cd)\mathbf{v}$ |
 | 单位元 | $1 \cdot \mathbf{v} = \mathbf{v}$ |
 
-> **直觉：** 向量空间就是"可以做加法和缩放的空间"。不一定是箭头——函数、矩阵、多项式都可以构成向量空间。
+> **直觉回顾：** 这些公理只是在说“加法和缩放要像你期望的那样表现”。比如加法可以交换顺序、有零元、有负元。如果你觉得“当然应该这样”——恰好，向量空间就是把这个“当然”写成了数学。
 
 ---
 
 ### 2. 子空间 (Subspace)
 
+**问题引入：** 在 768 维的词嵌入空间里，“所有动物词”的嵌入会不会占据某个“片区”？如果动物词之间做加减和缩放，结果还在这个片区内吗？
+
+这就是“子空间”的直觉：大空间里的一块“自封闭”的区域——在里面做加法和缩放永远不会跑出去。
+
 $V$ 的子集 $W$ 是子空间当且仅当 $W$ 对加法和标量乘法封闭。
 
-**判定法（三合一）：**
+**判定法(三合一):**
 
 $$
 W \leq V \iff \begin{cases} \mathbf{0} \in W \\ \mathbf{u}, \mathbf{v} \in W \Rightarrow \mathbf{u} + \mathbf{v} \in W \\ \mathbf{v} \in W,\ c \in F \Rightarrow c\mathbf{v} \in W \end{cases}
 $$
 
-**例子：**
+**例子:**
 - $\mathbb{R}^3$ 中过原点的平面 → ✅ 子空间
-- $\mathbb{R}^3$ 中不过原点的平面 → ❌ 不是子空间（不含 $\mathbf{0}$）
+- $\mathbb{R}^3$ 中不过原点的平面 → ❌ 不是子空间(不含 $\mathbf{0}$)
 
 ---
 
 ### 3. 线性组合与张成 (Span)
 
-向量 $\mathbf{v}_1, \mathbf{v}_2, \ldots, \mathbf{v}_n$ 的**线性组合**：
+**问题引入：** 你有 3 个基础情感向量：“快乐”、“悲伤”、“愤怒”。通过不同比例的混合，能否表达所有可能的情感？“70% 快乐 + 30% 悲伤” 就是一个线性组合。所有这种混合能达到的范围，就是这组向量的“张成”。
+
+向量 $\mathbf{v}_1, \mathbf{v}_2, \ldots, \mathbf{v}_n$ 的**线性组合**:
 
 $$
 c_1\mathbf{v}_1 + c_2\mathbf{v}_2 + \cdots + c_n\mathbf{v}_n, \quad c_i \in F
 $$
 
-**张成：**
+**张成:**
 
 $$
 \text{Span}\{\mathbf{v}_1, \ldots, \mathbf{v}_n\} = \lbrace \sum_{i=1}^{n} c_i \mathbf{v}_i \mid c_i \in F \rbrace
@@ -66,49 +102,59 @@ $$
 
 ### 4. 线性无关 (Linear Independence)
 
+**问题引入：** 你用 768 个维度表示词义，但真的需要这么多吗？如果某个维度可以由其他维度算出来，它就是“多余”的。线性无关 = 没有多余信息。
+
 $$
 \mathbf{v}_1, \ldots, \mathbf{v}_n \text{ 线性无关} \iff \left( \sum_{i=1}^n c_i \mathbf{v}_i = \mathbf{0} \implies c_1 = c_2 = \cdots = c_n = 0 \right)
 $$
 
-> **直觉：** 没有"多余的"向量——没有一个向量可以被其他向量线性表示。
+> **直觉:** 没有"多余的"向量--没有一个向量可以被其他向量线性表示。
 
 ---
 
 ### 5. 基与维度 (Basis & Dimension)
 
-**基** = 既线性无关又张成整个空间的向量组。
+**问题引入：** GPT 用 12288 维向量表示每个 token，BERT 用 768 维。这个数字是哪来的？它就是“基”的大小，也就是空间的维度——你需要多少个“方向”才能覆盖整个空间。
+
+**基** = 既线性无关又张成整个空间的向量组。它是表示空间的“最小完备坐标系”。
 
 $$
-\mathbb{R}^2 \text{ 的标准基：} \lbrace \begin{pmatrix}1\\0\end{pmatrix},\ \begin{pmatrix}0\\1\end{pmatrix} \rbrace
+\mathbb{R}^2 \text{ 的标准基:} \lbrace \begin{pmatrix}1\\0\end{pmatrix},\ \begin{pmatrix}0\\1\end{pmatrix} \rbrace
 $$
 
 $$
-\mathbb{R}^2 \text{ 的另一组基：} \lbrace \begin{pmatrix}1\\1\end{pmatrix},\ \begin{pmatrix}1\\-1\end{pmatrix} \rbrace
+\mathbb{R}^2 \text{ 的另一组基:} \lbrace \begin{pmatrix}1\\1\end{pmatrix},\ \begin{pmatrix}1\\-1\end{pmatrix} \rbrace
 $$
 
 **维度** $\dim(V)$ = 基中向量的个数。
 
-> **关键定理：** 同一向量空间的任意两组基包含相同数量的向量。
+> **关键定理:** 同一向量空间的任意两组基包含相同数量的向量。
 
 ---
 
 ### 6. 线性变换 (Linear Transformation)
 
-$T: V \to W$ 是线性变换当且仅当：
+**问题引入：** 神经网络每一层对输入向量做了什么？本质上就是一个线性变换（加上非线性激活函数）。线性变换 = “保持加法和缩放结构”的函数，它不会“扭曲”空间，只会拉伸、旋转、压缩。
+
+$T: V \to W$ 是线性变换当且仅当:
 
 $$
 T(\mathbf{u} + \mathbf{v}) = T(\mathbf{u}) + T(\mathbf{v}), \qquad T(c\mathbf{v}) = cT(\mathbf{v})
 $$
 
-> **直觉：** "直线变换后还是直线，原点不动"的变换。
+> **直觉:** "直线变换后还是直线,原点不动"的变换。
 
-**例子：**
+**例子:**
 - 旋转、缩放、投影、镜像 → ✅ 线性
-- 平移 → ❌ **不是**线性的（原点移动了）
+- 平移 → ❌ **不是**线性的(原点移动了)
 
 ---
 
 ### 7. 核与像 (Kernel & Image)
+
+**问题引入：** 当你把 768 维的 Embedding 通过一个线性层压缩到 64 维时，丢失了什么？哪些信息保留了？
+- **核 (Kernel)** = 被“压死”的向量——变换后变成 0 的那部分，就是丢失的信息
+- **像 (Image)** = 输出能到达的范围，就是保留下来的信息
 
 $$
 \text{Ker}(T) = \{ \mathbf{v} \in V : T(\mathbf{v}) = \mathbf{0} \}
@@ -118,7 +164,7 @@ $$
 \text{Im}(T) = \{ T(\mathbf{v}) : \mathbf{v} \in V \}
 $$
 
-**维度定理（Rank-Nullity Theorem）：**
+**维度定理(Rank-Nullity Theorem):**
 
 $$
 \boxed{\dim(V) = \dim(\text{Ker}(T)) + \dim(\text{Im}(T))}
@@ -130,13 +176,13 @@ $$
 
 ### 8. 矩阵表示
 
-选定基 $\{\mathbf{e}_1, \ldots, \mathbf{e}_n\}$ 后，线性变换 $T$ 可用矩阵 $A$ 表示：
+选定基 $\{\mathbf{e}_1, \ldots, \mathbf{e}_n\}$ 后,线性变换 $T$ 可用矩阵 $A$ 表示:
 
 $$
 T(\mathbf{v}) = A\mathbf{v}
 $$
 
-矩阵的**第 $j$ 列** = $T(\mathbf{e}_j)$（第 $j$ 个基向量的像）。
+矩阵的**第 $j$ 列** = $T(\mathbf{e}_j)$(第 $j$ 个基向量的像)。
 
 ---
 
@@ -144,11 +190,11 @@ $$
 
 | 数学概念 | AI 中的体现 |
 |----------|------------|
-| 向量空间 | Embedding 空间（词/句子 → 高维向量） |
+| 向量空间 | Embedding 空间(词/句子 → 高维向量) |
 | 线性变换 | 神经网络的线性层 $\mathbf{y} = W\mathbf{x} + \mathbf{b}$ |
 | 基变换 | 不同表示空间之间的转换 |
-| $\dim(V)$ | Embedding 维度（768, 1024, 4096 等） |
-| $\text{Ker}(T)$ | 信息丢失（降维时被压缩的部分） |
+| $\dim(V)$ | Embedding 维度(768, 1024, 4096 等) |
+| $\text{Ker}(T)$ | 信息丢失(降维时被压缩的部分) |
 | $\text{rank}(A)$ | LoRA 低秩适配的数学基础 |
 
 ---
@@ -165,11 +211,11 @@ import PDF from '../.vitepress/components/PDF.vue'
 - **Chapter 2**: Vector Spaces, Bases, Linear Maps (p.41)
 - **Chapter 3**: Matrices and Linear Maps (p.91)
 
-<PDF src="https://www.cis.upenn.edu/~jean/math-deep.pdf" title="Gallier — Chapter 2: Vector Spaces" :page="41" height="700px" />
+<PDF src="https://www.cis.upenn.edu/~jean/math-deep.pdf" title="Gallier - Chapter 2: Vector Spaces" :page="41" height="700px" />
 
-<PDF src="https://www.cis.upenn.edu/~jean/math-deep.pdf" title="Gallier — Chapter 3: Matrices and Linear Maps" :page="91" height="700px" />
+<PDF src="https://www.cis.upenn.edu/~jean/math-deep.pdf" title="Gallier - Chapter 3: Matrices and Linear Maps" :page="91" height="700px" />
 
-### 🎬 3Blue1Brown — Essence of Linear Algebra
+### 🎬 3Blue1Brown - Essence of Linear Algebra
 
 #### Ep 1: Vectors, what even are they?
 <YouTube id="fNk_zzaMoSs" title="向量的多种理解" />
@@ -190,9 +236,9 @@ import PDF from '../.vitepress/components/PDF.vue'
 
 ## 练习题
 
-### Part A — 基础题（确认概念理解）
+### Part A - 基础题(确认概念理解)
 
-**Q1.** 判断以下哪些是 $\mathbb{R}^2$ 的子空间，说明理由：
+**Q1.** 判断以下哪些是 $\mathbb{R}^2$ 的子空间,说明理由:
 
 - (a) $\{(x, y) : x + y = 0\}$
 - (b) $\{(x, y) : x + y = 1\}$
@@ -201,9 +247,9 @@ import PDF from '../.vitepress/components/PDF.vue'
 
 ---
 
-**Q2.** 向量组 $\{(1, 2, 3),\ (4, 5, 6),\ (7, 8, 9)\}$ 是否线性无关？给出证明。
+**Q2.** 向量组 $\{(1, 2, 3),\ (4, 5, 6),\ (7, 8, 9)\}$ 是否线性无关?给出证明。
 
-> 💡 提示：尝试写出一个非零线性组合等于零向量。
+> 💡 提示:尝试写出一个非零线性组合等于零向量。
 
 ---
 
@@ -216,13 +262,13 @@ import PDF from '../.vitepress/components/PDF.vue'
 
 ---
 
-**Q4.** 证明：平移变换 $T(\mathbf{v}) = \mathbf{v} + \mathbf{a}$（其中 $\mathbf{a} \neq \mathbf{0}$）不是线性变换。
+**Q4.** 证明:平移变换 $T(\mathbf{v}) = \mathbf{v} + \mathbf{a}$(其中 $\mathbf{a} \neq \mathbf{0}$)不是线性变换。
 
 ---
 
-### Part B — 应用题（连接 AI）
+### Part B - 应用题(连接 AI)
 
-**Q5.** 一个词嵌入模型把词映射到 $\mathbb{R}^4$：
+**Q5.** 一个词嵌入模型把词映射到 $\mathbb{R}^4$:
 
 $$
 \text{king} \to \begin{pmatrix}1\\0\\1\\1\end{pmatrix}, \quad
@@ -231,36 +277,36 @@ $$
 \text{woman} \to \begin{pmatrix}0\\1\\1\\0\end{pmatrix}
 $$
 
-验证 $\text{king} - \text{man} + \text{woman} = \text{queen}$。这个"向量类比"能工作的数学原因是什么？
+验证 $\text{king} - \text{man} + \text{woman} = \text{queen}$。这个"向量类比"能工作的数学原因是什么?
 
 ---
 
-**Q6.** 一个线性层的权重矩阵 $W \in \mathbb{R}^{512 \times 768}$：
+**Q6.** 一个线性层的权重矩阵 $W \in \mathbb{R}^{512 \times 768}$:
 
-- (a) 输入维度 = ？输出维度 = ？
-- (b) 这个变换的几何意义？（升维 / 降维 / 等维）
-- (c) LoRA 将 $W \approx BA$，其中 $B \in \mathbb{R}^{512 \times 16}$，$A \in \mathbb{R}^{16 \times 768}$。$BA$ 的秩最大是多少？相比原始 $W$ 省了多少参数？
-
----
-
-### Part C — 证明题（加深理解）
-
-**Q7.** 证明：若 $T: V \to W$ 和 $S: W \to U$ 都是线性变换，则 $S \circ T: V \to U$ 也是线性变换。
+- (a) 输入维度 = ?输出维度 = ?
+- (b) 这个变换的几何意义?(升维 / 降维 / 等维)
+- (c) LoRA 将 $W \approx BA$,其中 $B \in \mathbb{R}^{512 \times 16}$,$A \in \mathbb{R}^{16 \times 768}$。$BA$ 的秩最大是多少?相比原始 $W$ 省了多少参数?
 
 ---
 
-**Q8.** 证明：$\text{Ker}(T)$ 是 $V$ 的子空间。
+### Part C - 证明题(加深理解)
+
+**Q7.** 证明:若 $T: V \to W$ 和 $S: W \to U$ 都是线性变换,则 $S \circ T: V \to U$ 也是线性变换。
+
+---
+
+**Q8.** 证明:$\text{Ker}(T)$ 是 $V$ 的子空间。
 
 ---
 
 ## ✅ 自测 Checklist
 
-完成以上练习后：
+完成以上练习后:
 
 - [ ] 能不查资料判断子空间
 - [ ] 能求线性变换的核和像
 - [ ] 能把线性变换写成矩阵
 - [ ] 能解释 AI 中线性层的数学本质
-- [ ] 理解维度定理（Rank-Nullity）的含义
+- [ ] 理解维度定理(Rank-Nullity)的含义
 
 **全部 ✅ → 进入 Week 2: 矩阵分解**
