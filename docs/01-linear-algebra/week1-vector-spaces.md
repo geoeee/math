@@ -57,7 +57,7 @@ $$
 **张成：**
 
 $$
-\text{Span}\{\mathbf{v}_1, \ldots, \mathbf{v}_n\} = \left\{ \sum_{i=1}^{n} c_i \mathbf{v}_i \ \middle|\ c_i \in F \right\}
+\text{Span}\{\mathbf{v}_1, \ldots, \mathbf{v}_n\} = \Big\{ \sum_{i=1}^{n} c_i \mathbf{v}_i \;\Big|\; c_i \in F \Big\}
 $$
 
 > 这些向量"能到达"的所有位置。
