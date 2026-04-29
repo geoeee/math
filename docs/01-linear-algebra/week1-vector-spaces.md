@@ -157,15 +157,19 @@ $$
 
 ### 📖 Gallier & Quaintance
 
-- **Chapter 2**: Vector Spaces, Bases, Linear Maps
-- **Chapter 3**: Matrices and Linear Maps
-- 📥 [PDF 下载](https://www.cis.upenn.edu/~jean/math-deep.pdf)
-
-### 🎬 3Blue1Brown — Essence of Linear Algebra
-
 <script setup>
 import YouTube from '../.vitepress/components/YouTube.vue'
+import PDF from '../.vitepress/components/PDF.vue'
 </script>
+
+- **Chapter 2**: Vector Spaces, Bases, Linear Maps (p.41)
+- **Chapter 3**: Matrices and Linear Maps (p.91)
+
+<PDF src="https://www.cis.upenn.edu/~jean/math-deep.pdf" title="Gallier — Chapter 2: Vector Spaces" :page="41" height="700px" />
+
+<PDF src="https://www.cis.upenn.edu/~jean/math-deep.pdf" title="Gallier — Chapter 3: Matrices and Linear Maps" :page="91" height="700px" />
+
+### 🎬 3Blue1Brown — Essence of Linear Algebra
 
 #### Ep 1: Vectors, what even are they?
 <YouTube id="fNk_zzaMoSs" title="向量的多种理解" />
