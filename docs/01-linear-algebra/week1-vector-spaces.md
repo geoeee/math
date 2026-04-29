@@ -163,13 +163,24 @@ $$
 
 ### 🎬 3Blue1Brown — Essence of Linear Algebra
 
-| 集数 | 标题 | 对应内容 |
-|:----:|------|----------|
-| 1 | [Vectors, what even are they?](https://www.youtube.com/watch?v=fNk_zzaMoSs) | 向量的多种理解 |
-| 2 | [Linear combinations, span, and basis vectors](https://www.youtube.com/watch?v=k7RM-ot2NWY) | 线性组合、张成、基 |
-| 3 | [Linear transformations and matrices](https://www.youtube.com/watch?v=kYB8IZa5AuE) | 线性变换 ↔ 矩阵 |
-| 4 | [Matrix multiplication as composition](https://www.youtube.com/watch?v=XkY2DOUCWMU) | 矩阵乘法 = 变换复合 |
-| 13 | [Change of basis](https://www.youtube.com/watch?v=P2LTAUO1TdA) | 基变换 |
+<script setup>
+import YouTube from '../.vitepress/components/YouTube.vue'
+</script>
+
+#### Ep 1: Vectors, what even are they?
+<YouTube id="fNk_zzaMoSs" title="向量的多种理解" />
+
+#### Ep 2: Linear combinations, span, and basis vectors
+<YouTube id="k7RM-ot2NWY" title="线性组合、张成、基" />
+
+#### Ep 3: Linear transformations and matrices
+<YouTube id="kYB8IZa5AuE" title="线性变换 ↔ 矩阵" />
+
+#### Ep 4: Matrix multiplication as composition
+<YouTube id="XkY2DOUCWMU" title="矩阵乘法 = 变换复合" />
+
+#### Ep 13: Change of basis
+<YouTube id="P2LTAUO1TdA" title="基变换" />
 
 ---
 
@@ -248,4 +259,4 @@ $$
 - [ ] 能解释 AI 中线性层的数学本质
 - [ ] 理解维度定理（Rank-Nullity）的含义
 
-**全部 ✅ → 进入 [Week 2: 矩阵分解](./week2-matrix-decomposition.md)**
+**全部 ✅ → 进入 Week 2: 矩阵分解**
