@@ -21,7 +21,8 @@ export default defineConfig({
         text: '线性代数',
         items: [
           { text: '概览', link: '/01-linear-algebra/' },
-          { text: 'Week 1: 向量空间与线性变换', link: '/01-linear-algebra/week1-vector-spaces' }
+          { text: 'Week 1: 向量空间与线性变换', link: '/01-linear-algebra/week1-vector-spaces' },
+          { text: 'Week 1: 练习卷 🖨️', link: '/01-linear-algebra/week1-exercises' }
         ]
       },
       {
