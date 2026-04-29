@@ -57,7 +57,7 @@ $$
 **张成：**
 
 $$
-\text{Span}\{\mathbf{v}_1, \ldots, \mathbf{v}_n\} = \Big\{ \sum_{i=1}^{n} c_i \mathbf{v}_i \;\Big|\; c_i \in F \Big\}
+\text{Span}\{\mathbf{v}_1, \ldots, \mathbf{v}_n\} = \lbrace \sum_{i=1}^{n} c_i \mathbf{v}_i \mid c_i \in F \rbrace
 $$
 
 > 这些向量"能到达"的所有位置。
@@ -79,11 +79,11 @@ $$
 **基** = 既线性无关又张成整个空间的向量组。
 
 $$
-\mathbb{R}^2 \text{ 的标准基：} \left\{ \begin{pmatrix}1\\0\end{pmatrix},\ \begin{pmatrix}0\\1\end{pmatrix} \right\}
+\mathbb{R}^2 \text{ 的标准基：} \lbrace \begin{pmatrix}1\\0\end{pmatrix},\ \begin{pmatrix}0\\1\end{pmatrix} \rbrace
 $$
 
 $$
-\mathbb{R}^2 \text{ 的另一组基：} \left\{ \begin{pmatrix}1\\1\end{pmatrix},\ \begin{pmatrix}1\\-1\end{pmatrix} \right\}
+\mathbb{R}^2 \text{ 的另一组基：} \lbrace \begin{pmatrix}1\\1\end{pmatrix},\ \begin{pmatrix}1\\-1\end{pmatrix} \rbrace
 $$
 
 **维度** $\dim(V)$ = 基中向量的个数。
