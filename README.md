@@ -1,5 +1,7 @@
 # AI Math Roadmap ⚡
 
+> 🌐 **在线阅读：** https://geoeee.github.io/math/
+
 数学基础 → AI 原理 → Agent 构建
 
 ## 目标
