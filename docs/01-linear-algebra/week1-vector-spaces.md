@@ -467,11 +467,50 @@ import PDF from '../.vitepress/components/PDF.vue'
 - (c) $\{(x, y) : x^2 + y^2 \leq 1\}$
 - (d) $\{(x, y) : x = 2y\}$
 
+<details>
+<summary>💡 点击查看答案</summary>
+
+- **(a) ✅ 是子空间。**
+  - 零向量：$(0,0)$，$0+0=0$ ✓
+  - 加法封闭：若 $x_1+y_1=0$ 且 $x_2+y_2=0$，则 $(x_1+x_2)+(y_1+y_2)=0$ ✓
+  - 缩放封闭：若 $x+y=0$，则 $cx+cy=c(x+y)=0$ ✓
+
+- **(b) ❌ 不是子空间。**
+  - 零向量 $(0,0)$ 不满足 $0+0=1$，不含零向量。
+
+- **(c) ❌ 不是子空间。**
+  - 缩放不封闭：$(1,0)$ 满足 $1^2+0^2 \leq 1$，但 $2(1,0)=(2,0)$，$4+0=4>1$。
+
+- **(d) ✅ 是子空间。**
+  - 零向量：$(0,0)$，$0=2\times0$ ✓
+  - 加法封闭：若 $x_1=2y_1$ 且 $x_2=2y_2$，则 $x_1+x_2=2(y_1+y_2)$ ✓
+  - 缩放封闭：若 $x=2y$，则 $cx=2(cy)$ ✓
+
+</details>
+
 ---
 
 **Q2.** 向量组 $\{(1, 2, 3),\ (4, 5, 6),\ (7, 8, 9)\}$ 是否线性无关?给出证明。
 
 > 💡 提示:尝试写出一个非零线性组合等于零向量。
+
+<details>
+<summary>💡 点击查看答案</summary>
+
+**线性相关。**
+
+找非平凡解 $c_1(1,2,3) + c_2(4,5,6) + c_3(7,8,9) = (0,0,0)$：
+
+取 $c_1=1, c_2=-2, c_3=1$：
+$$
+(1,2,3) - 2(4,5,6) + (7,8,9) = (1-8+7,\ 2-10+8,\ 3-12+9) = (0,0,0)
+$$
+
+存在非零系数组合使结果为零向量，因此线性相关。
+
+等价地：$\mathbf{v}_3 = 2\mathbf{v}_2 - \mathbf{v}_1$，第三个向量可由前两个线性表示。
+
+</details>
 
 ---
 
@@ -482,9 +521,62 @@ import PDF from '../.vitepress/components/PDF.vue'
 - (c) 求 $\dim(\text{Im}(T))$
 - (d) 写出 $T$ 在标准基下的矩阵
 
+<details>
+<summary>💡 点击查看答案</summary>
+
+**(a)** 设 $\mathbf{u}=(x_1,y_1,z_1)$，$\mathbf{v}=(x_2,y_2,z_2)$，$c \in \mathbb{R}$：
+
+$$
+T(\mathbf{u}+\mathbf{v}) = (x_1+x_2+y_1+y_2,\ y_1+y_2-z_1-z_2) = T(\mathbf{u}) + T(\mathbf{v}) \checkmark
+$$
+$$
+T(c\mathbf{u}) = (cx_1+cy_1,\ cy_1-cz_1) = c(x_1+y_1,\ y_1-z_1) = cT(\mathbf{u}) \checkmark
+$$
+
+**(b)** 解 $T(x,y,z)=(0,0)$：
+$$
+\begin{cases} x+y=0 \\ y-z=0 \end{cases} \Rightarrow x=-y,\ z=y
+$$
+令 $y=t$：$(x,y,z)=(-t,t,t)=t(-1,1,1)$
+
+$$\text{Ker}(T) = \text{Span}\{(-1,1,1)\}, \quad \dim(\text{Ker}(T))=1$$
+
+**(c)** 由 Rank-Nullity 定理：
+$$\dim(\text{Im}(T)) = \dim(\mathbb{R}^3) - \dim(\text{Ker}(T)) = 3 - 1 = 2$$
+
+因此 $\text{Im}(T) = \mathbb{R}^2$（满射）。
+
+**(d)** 计算基向量的像：
+- $T(1,0,0) = (1,0)$
+- $T(0,1,0) = (1,1)$
+- $T(0,0,1) = (0,-1)$
+
+$$A = \begin{pmatrix} 1 & 1 & 0 \\ 0 & 1 & -1 \end{pmatrix}$$
+
+</details>
+
 ---
 
 **Q4.** 证明:平移变换 $T(\mathbf{v}) = \mathbf{v} + \mathbf{a}$(其中 $\mathbf{a} \neq \mathbf{0}$)不是线性变换。
+
+<details>
+<summary>💡 点击查看答案</summary>
+
+**方法1（检验零向量）：**
+
+线性变换必须满足 $T(\mathbf{0}) = \mathbf{0}$。但：
+$$T(\mathbf{0}) = \mathbf{0} + \mathbf{a} = \mathbf{a} \neq \mathbf{0}$$
+
+因此 $T$ 不是线性变换。$\blacksquare$
+
+**方法2（检验加法性）：**
+
+$$T(\mathbf{u}+\mathbf{v}) = (\mathbf{u}+\mathbf{v}) + \mathbf{a}$$
+$$T(\mathbf{u}) + T(\mathbf{v}) = (\mathbf{u}+\mathbf{a}) + (\mathbf{v}+\mathbf{a}) = \mathbf{u}+\mathbf{v}+2\mathbf{a}$$
+
+因为 $\mathbf{a} \neq \mathbf{0}$，所以 $T(\mathbf{u}+\mathbf{v}) \neq T(\mathbf{u})+T(\mathbf{v})$。$\blacksquare$
+
+</details>
 
 ---
 
@@ -501,6 +593,27 @@ $$
 
 验证 $\text{king} - \text{man} + \text{woman} = \text{queen}$。这个"向量类比"能工作的数学原因是什么?
 
+<details>
+<summary>💡 点击查看答案</summary>
+
+**验证：**
+$$
+\text{king} - \text{man} + \text{woman} = \begin{pmatrix}1\\0\\1\\1\end{pmatrix} - \begin{pmatrix}0\\0\\1\\0\end{pmatrix} + \begin{pmatrix}0\\1\\1\\0\end{pmatrix} = \begin{pmatrix}1\\1\\1\\1\end{pmatrix} = \text{queen} \checkmark
+$$
+
+**数学原因：**
+
+向量类比能工作，是因为词嵌入空间是一个**向量空间**，加法和缩放运算是封闭的。
+
+更深层地看：$\text{king} - \text{man} = (1,0,0,1)$ 编码了"去掉男性特征后剩下的皇室/权力语义"。将这个**差向量**加到 $\text{woman}$ 上，就得到了"带有女性特征的皇室/权力" = queen。
+
+本质上，这依赖于嵌入空间中**语义关系被编码为平行的方向向量**：
+$$\text{king} - \text{man} \approx \text{queen} - \text{woman}$$
+
+即"性别"这一语义维度在空间中表现为一个近似固定的方向，对不同词对（king/queen, man/woman）的偏移量近似相等。这是向量空间的线性结构使语义类比成为简单的向量加减法。
+
+</details>
+
 ---
 
 **Q6.** 一个线性层的权重矩阵 $W \in \mathbb{R}^{512 \times 768}$:
@@ -509,15 +622,79 @@ $$
 - (b) 这个变换的几何意义?(升维 / 降维 / 等维)
 - (c) LoRA 将 $W \approx BA$,其中 $B \in \mathbb{R}^{512 \times 16}$,$A \in \mathbb{R}^{16 \times 768}$。$BA$ 的秩最大是多少?相比原始 $W$ 省了多少参数?
 
+<details>
+<summary>💡 点击查看答案</summary>
+
+**(a)**
+- 输入维度 = **768**（矩阵列数）
+- 输出维度 = **512**（矩阵行数）
+
+**(b)** **降维**。从 768 维压缩到 512 维，丢失了部分信息（Ker 非平凡）。
+
+**(c)**
+- $BA$ 的秩最大为 $\min(\text{rank}(B), \text{rank}(A)) \leq \min(16, 16) = \mathbf{16}$
+- 原始 $W$ 参数量：$512 \times 768 = 393{,}216$
+- LoRA 参数量：$512 \times 16 + 16 \times 768 = 8{,}192 + 12{,}288 = 20{,}480$
+- 节省：$393{,}216 - 20{,}480 = 372{,}736$，约省 **94.8%** 参数
+
+这就是 LoRA 的核心思想：用低秩近似代替全量微调，假设权重更新矩阵 $\Delta W$ 本身是低秩的。
+
+</details>
+
 ---
 
 ### Part C - 证明题(加深理解)
 
 **Q7.** 证明:若 $T: V \to W$ 和 $S: W \to U$ 都是线性变换,则 $S \circ T: V \to U$ 也是线性变换。
 
+<details>
+<summary>💡 点击查看答案</summary>
+
+需验证 $S \circ T$ 满足线性变换的两个条件：
+
+**加法性：** 对任意 $\mathbf{u}, \mathbf{v} \in V$：
+$$
+(S \circ T)(\mathbf{u}+\mathbf{v}) = S(T(\mathbf{u}+\mathbf{v})) = S(T(\mathbf{u})+T(\mathbf{v})) = S(T(\mathbf{u})) + S(T(\mathbf{v})) = (S \circ T)(\mathbf{u}) + (S \circ T)(\mathbf{v})
+$$
+
+（第二步用 $T$ 的线性性，第三步用 $S$ 的线性性）
+
+**齐次性：** 对任意 $c \in F$，$\mathbf{v} \in V$：
+$$
+(S \circ T)(c\mathbf{v}) = S(T(c\mathbf{v})) = S(cT(\mathbf{v})) = cS(T(\mathbf{v})) = c(S \circ T)(\mathbf{v})
+$$
+
+因此 $S \circ T$ 是线性变换。$\blacksquare$
+
+> **AI 连接：** 这就是为什么神经网络中多个线性层的复合（不加激活函数）仍然只是一个线性变换——所以必须加非线性激活函数才能增加表达能力。
+
+</details>
+
 ---
 
 **Q8.** 证明:$\text{Ker}(T)$ 是 $V$ 的子空间。
+
+<details>
+<summary>💡 点击查看答案</summary>
+
+设 $T: V \to W$ 是线性变换，$\text{Ker}(T) = \{\mathbf{v} \in V : T(\mathbf{v}) = \mathbf{0}\}$。验证子空间三条件：
+
+**1. 含零向量：**
+$$T(\mathbf{0}) = \mathbf{0}$$（线性变换必将零映为零），所以 $\mathbf{0} \in \text{Ker}(T)$ ✓
+
+**2. 加法封闭：** 设 $\mathbf{u}, \mathbf{v} \in \text{Ker}(T)$，即 $T(\mathbf{u})=\mathbf{0}$，$T(\mathbf{v})=\mathbf{0}$：
+$$T(\mathbf{u}+\mathbf{v}) = T(\mathbf{u}) + T(\mathbf{v}) = \mathbf{0} + \mathbf{0} = \mathbf{0}$$
+所以 $\mathbf{u}+\mathbf{v} \in \text{Ker}(T)$ ✓
+
+**3. 缩放封闭：** 设 $\mathbf{v} \in \text{Ker}(T)$，$c \in F$：
+$$T(c\mathbf{v}) = cT(\mathbf{v}) = c\mathbf{0} = \mathbf{0}$$
+所以 $c\mathbf{v} \in \text{Ker}(T)$ ✓
+
+三条件均满足，$\text{Ker}(T)$ 是 $V$ 的子空间。$\blacksquare$
+
+> **AI 连接：** Ker(T) 是子空间意味着"被网络忽略的信息"形成一个结构化的子空间——它们不是随机散落的，而是构成一个完整的线性结构。
+
+</details>
 
 ---
 
